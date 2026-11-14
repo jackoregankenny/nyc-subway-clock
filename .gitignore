@@ -1,0 +1,9 @@
+# The AWTRIX NG clone is its own git repo (branch btrain); see README
+firmware/
+# Flashable images, logs and the stock flash dump: large or device-specific
+build/
+logs/
+backup/
+.DS_Store
+# Personal working notes (device MAC, IP, stock backup hash): never published
+notes/

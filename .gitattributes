@@ -1,0 +1,5 @@
+# Exported from firmware/ by tools/export-patches.sh: review changes there, not here
+patches/*.patch -diff linguist-generated=true
+*.png binary
+*.csv text eol=lf
+*.sh text eol=lf

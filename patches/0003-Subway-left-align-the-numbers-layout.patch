@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Jack O'Regan Kenny <42699197+jackoregankenny@users.noreply.github.com>
+Date: Fri, 13 Nov 2026 19:05:51 -0500
+Subject: [PATCH] Subway: left-align the numbers layout
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ src/core/transit/SubwayView.h      | 11 +++++------
+ test/test_mtafeed/test_mtafeed.cpp |  7 ++-----
+ 2 files changed, 7 insertions(+), 11 deletions(-)
+
+diff --git a/src/core/transit/SubwayView.h b/src/core/transit/SubwayView.h
+index 7eb0bb2..6ab416e 100644
+--- a/src/core/transit/SubwayView.h
++++ b/src/core/transit/SubwayView.h
+@@ -121,8 +121,8 @@ inline void renderSubway(Canvas& c, const GfxFont& font, const BoardView& v, con
+ // Up to three lines at one station (B, C and the overnight A at 81 St). Three layouts, picked in
+ // the app's settings:
+ //
+-//   Numbers    no bullets, just the next trains of both lines in time order, each number in its
+-//              line's color (B orange, C blue), centred across the whole width. As many as fit, at
++//   Numbers    no bullets, just the next trains of all lines in time order, each number in its
++//              line's color (B orange, A/C blue), left-aligned from column 0. As many as fit, at
+ //              most four, 3-px gaps (2 when tight). A lone train reads "12 MIN".
+ //   Bullets    side by side: each 16-px half is a live line's bullet and its next train (the first
+ //              two live lines when three are). NOW is 14 px
+@@ -200,14 +200,13 @@ inline void renderBoard(Canvas& c, const GfxFont& font, const BoardView* v, cons
+   }
+   const int W = c.width();
+   if (n == 0) {
+-    text::drawCenteredIn(c, font, "- -", kBaseline, kNoDataText, 0, W);
++    drawInkAt(c, font, "- -", 0, kNoDataText);
+     return;
+   }
+   if (n == 1 && e[0].m != BoardView::kNow) {
+     const std::string unit = "MIN";
+     const int wu = inkWidth(font, unit);
+-    const int x = (W - (e[0].w + 3 + wu) + 1) / 2;
+-    drawInkAt(c, font, unit, drawInkAt(c, font, e[0].s, x, e[0].color) + 3,
++    drawInkAt(c, font, unit, drawInkAt(c, font, e[0].s, 0, e[0].color) + 3,
+               color::scale8(st[0].text, st[0].labelLevel));
+     return;
+   }
+@@ -221,7 +220,7 @@ inline void renderBoard(Canvas& c, const GfxFont& font, const BoardView* v, cons
+     if (gap > 2) --gap;
+     else { --count; gap = 3; }
+   }
+-  int x = (W - width(count, gap) + 1) / 2;
++  int x = 0;
+   for (int i = 0; i < count; ++i) x = drawInkAt(c, font, e[i].s, x, e[i].color) + gap;
+ }
+ 
+diff --git a/test/test_mtafeed/test_mtafeed.cpp b/test/test_mtafeed/test_mtafeed.cpp
+index ffdc5c6..a81eefb 100644
+--- a/test/test_mtafeed/test_mtafeed.cpp
++++ b/test/test_mtafeed/test_mtafeed.cpp
+@@ -758,11 +758,8 @@ static void test_two_lines_merge_in_time_order_by_color() {
+   TEST_ASSERT_EQUAL_HEX32(B, r[3].second);
+   TEST_ASSERT_EQUAL_MESSAGE(0, countColor(c, 0xFFFFFFu), pic.c_str());
+   for (int x = 0; x < 32; ++x) TEST_ASSERT_EQUAL_HEX32(0, c.getPixel(x, 7));
+-  // centred
+-  int first = 0, last = 31;
+-  while (!columnLit(c, first)) ++first;
+-  while (!columnLit(c, last)) --last;
+-  TEST_ASSERT_TRUE_MESSAGE(first - (31 - last) >= -1 && first - (31 - last) <= 1, pic.c_str());
++  // left-aligned: the first train's ink starts at column 0
++  TEST_ASSERT_TRUE_MESSAGE(columnLit(c, 0), pic.c_str());
+ }
+ 
+ static void test_two_lines_never_clip_and_drop_what_does_not_fit() {
