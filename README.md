@@ -30,6 +30,10 @@ That's why the defaults are one particular station and why it ships with a
 [card for the box](docs/GIFT_CARD.md). Everything is configurable, so it works as a gift for
 anyone in the city.
 
+In the spirit of honesty: this was largely vibe coded with [Claude Code](https://claude.com/claude-code).
+I set the direction, tried it on the real clock and made the calls; Claude wrote most of the code,
+tests and docs. The commits say so too.
+
 ## Get one running
 
 1. **Hardware:** a Ulanzi **TC001** pixel clock (classic ESP32, 4 MB; the TC002 is a different
