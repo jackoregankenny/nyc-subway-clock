@@ -1,5 +1,7 @@
 # Documentation
 
+<p align="center"><img src="images/hero.png" alt="The clock showing the next B and C trains" width="600"></p>
+
 **Using a clock**
 
 - [Install](INSTALL.md): flash a TC001 over USB, or update one that runs AWTRIX NG.
