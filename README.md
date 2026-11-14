@@ -21,6 +21,15 @@ It runs on [AWTRIX NG](https://github.com/Blueforcer/awtrix-ng), so it's still a
 - **Polite.** Dims in the dark, switches off in a pitch-black room and stops downloading until the
   lights come on. Downloads are gzipped: about 10–30 KB per update.
 
+## Why this exists
+
+I was graciously hosted by one of my girlfriend's friends: a friend of a friend when I arrived,
+and now, very clearly, a friend of mine too. This clock was my thank-you gift. It shows the trains
+they actually take, so the next one is a glance away on the way out the door, with no app to open.
+That's why the defaults are one particular station and why it ships with a
+[card for the box](docs/GIFT_CARD.md). Everything is configurable, so it works as a gift for
+anyone in the city.
+
 ## Get one running
 
 1. **Hardware:** a Ulanzi **TC001** pixel clock (classic ESP32, 4 MB; the TC002 is a different
