@@ -8,14 +8,14 @@ Everything the Subway clock shows and every setting it has. For flashing a clock
 The clock rotates through its apps (Time, Subway, and whatever else you switch on). The Subway
 screen looks like this with the default layout:
 
-| You see | It means |
-|---|---|
-| `3   7   12   25`, in orange and blue | Trains in 3, 7, 12 and 25 minutes, soonest first. Each number is in its line's color: orange B, blue A or C, and so on |
-| `N` | A train arriving now (under a minute) |
-| `12 MIN` | Only one train is predicted |
-| A red dot, top right | The MTA reports delays, suspensions or other unplanned trouble on one of your lines. Planned work and service notices don't count |
-| A gray `- -` | No live times right now: no internet, or the MTA's feed is down or out of date. The clock never shows an old countdown |
-| No Subway screen at all | Nothing is running on your lines at your station (late at night, say), so it skips its turn |
+| You see | | It means |
+|---|---|---|
+| <img src="../preview/bc_3_7_12_25.png" width="220" alt="3 7 12 25 in orange and blue"> | `3 7 12 25` | Trains in 3, 7, 12 and 25 minutes, soonest first. Each number is in its line's color: orange B, blue A or C, and so on |
+| <img src="../preview/bc_now_4_9_14.png" width="220" alt="N 4 9 14"> | `N` | A train arriving now (under a minute) |
+| <img src="../preview/bc_b_only_12.png" width="220" alt="12 MIN"> | `12 MIN` | Only one train is predicted |
+| <img src="../preview/bc_alert_3_7_12_25.png" width="220" alt="times with a red dot top right"> | red dot | The MTA reports delays, suspensions or other unplanned trouble on one of your lines. Planned work and service notices don't count |
+| <img src="../preview/bc_offline.png" width="220" alt="gray dashes"> | `- -` | No live times right now: no internet, or the MTA's feed is down or out of date. The clock never shows an old countdown |
+| | no Subway screen | Nothing is running on your lines at your station (late at night, say), so it skips its turn |
 
 A line that isn't stopping drops out by itself. At 81 St the B and C run in the daytime and the A
 stops there only late at night, so with `B,C,A` you see B and C by day and the A overnight, with no
@@ -28,9 +28,11 @@ between downloads, so they stay right between updates.
 
 Set **Layout** in the app's settings:
 
-- **numbers** (default): all lines' next trains in time order, colored, no letters. At most four fit.
-- **bullets**: two lines side by side, each with its round line bullet and the next train.
-- **turns**: one line at a time, with its bullet and next two trains, switching every 5 seconds.
+| Layout | | |
+|---|---|---|
+| **numbers** (default) | <img src="../preview/bc_3_7_12_25.png" width="220" alt="numbers layout"> | All lines' next trains in time order, colored, no letters. At most four fit |
+| **bullets** | <img src="../preview/bc_bullets_3_7.png" width="220" alt="bullets layout"> | Two lines side by side, each with its round line bullet and the next train |
+| **turns** | <img src="../preview/bc_turns_b_3_25.png" width="220" alt="turns layout"> | One line at a time, with its bullet and next two trains, switching every 5 seconds |
 
 With a single line, every layout shows the bullet and the next two trains, e.g. `●B 4 · 11`.
 

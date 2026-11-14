@@ -96,6 +96,13 @@ cd firmware && MTA_PREVIEW_DIR=../preview CXXFLAGS="-Wno-inconsistent-missing-ov
 
 On a clock, `GET /api/v1/display/screen` returns the current 32×8 frame as JSON.
 
+The images in these docs (`preview/*.png`, `docs/images/`) are rendered from those exact frames
+by one script, so they always match the code:
+
+```bash
+tools/render-docs-images.sh
+```
+
 ## Where things are
 
 | Piece | Files (in `firmware/`) |

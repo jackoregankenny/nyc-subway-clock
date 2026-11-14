@@ -1,5 +1,7 @@
 # NYC subway countdown for the Ulanzi TC001
 
+<p align="center"><img src="docs/images/demo.gif" alt="The clock showing the time, then the next B and C trains in orange and blue" width="532"></p>
+
 A pixel clock that shows when your next subway train comes, **live from the MTA, with nothing else
 in the loop**: no server, no account, no phone app. The clock downloads the MTA's own real-time
 feeds over HTTPS and works out the countdown itself.
@@ -7,8 +9,6 @@ feeds over HTTPS and works out the countdown itself.
 It runs on [AWTRIX NG](https://github.com/Blueforcer/awtrix-ng), so it's still a full smart clock
 (time, date, auto-brightness, buttons, web UI, notifications, scripts) with one extra app:
 **Subway**.
-
-![What the clock shows](docs/images/screens.png)
 
 - **Any line, any station.** Up to three lines at one station. The defaults are downtown B, C and A
   at 81 St–Museum of Natural History; change them in the clock's web UI.
@@ -25,30 +25,27 @@ It runs on [AWTRIX NG](https://github.com/Blueforcer/awtrix-ng), so it's still a
 
 1. **Hardware:** a Ulanzi **TC001** pixel clock (classic ESP32, 4 MB; the TC002 is a different
    device) and a USB-C **data** cable.
-2. **Flash it** once over USB: [docs/INSTALL.md](docs/INSTALL.md). If your clock already runs
-   AWTRIX NG, upload the update file in its web UI instead.
+2. **Flash it** once over USB with the image from the
+   [latest release](https://github.com/jackoregankenny/nyc-subway-clock/releases/latest)
+   ([install guide](docs/INSTALL.md)). If your clock already runs AWTRIX NG, upload the update
+   file in its web UI instead.
 3. **Wi-Fi:** the clock opens a setup hotspot, `awtrixng-…`; join it from your phone and pick your
    network (2.4 GHz).
 4. **Your station:** open the clock's address in a browser → **Apps** → gear next to **Subway** →
    Lines, Station ID and Direction from [docs/STATIONS.md](docs/STATIONS.md) (all 496 stations,
    with what N and S mean at each).
 
-The [user guide](docs/USER_GUIDE.md) explains every screen and setting. There's also a
+The [user guide](docs/USER_GUIDE.md) explains every screen and setting, and the
+[FAQ](docs/FAQ.md) covers accuracy, data use and privacy. There's also a
 [one-page card](docs/GIFT_CARD.md) to put in the box if you're giving one away.
+
+## What it shows
+
+![Every Subway screen: B and C in time order, the overnight A, the alert dot, N for arriving, the bullets and turns layouts, a single line, and no data](docs/images/screens.png)
 
 ## How it works
 
-```
-MTA GTFS-Realtime feeds (8 feeds by line group, plus service alerts)
-        │  HTTPS, TLS verified against pinned roots, gzip; one request per feed every 30 s
-        ▼
-Ulanzi TC001: ESP32 with 320 KB of RAM, running AWTRIX NG + this patch
-  fetch task        streams each response through gunzip into the decoder; nothing of
-                    the feed is kept but the result
-  GTFS-RT decoder   push-style protobuf reader, under 640 bytes of state for any feed size
-  arrival rules     live / no arrivals / stale / unavailable; countdowns recomputed every frame
-  Subway app        an ordinary AWTRIX script, its settings in the web UI
-```
+![From the MTA feed through TLS, gunzip and the decoder on one core, to the Subway app and the LEDs on the other](docs/images/architecture.svg)
 
 A feed is up to 560 KB of protobuf and the clock has about 120 KB free, so nothing is ever
 buffered: bytes go from the socket through the decompressor into the decoder as they arrive. The
@@ -61,9 +58,9 @@ whole story, including the ESP32 quirks it took to get there, is in
 |---|---|
 | [`patches/`](patches) | The firmware change as a patch series on AWTRIX NG `d51e266` (v1.2.3) |
 | [`tools/setup-firmware.sh`](tools/setup-firmware.sh) | Clones AWTRIX NG and applies the patches as a `btrain` branch in `firmware/` |
-| [`docs/`](docs) | Install guide, user guide, station list, how it works, development notes |
+| [`docs/`](docs) | [All the documentation](docs/README.md): install, user guide, stations, FAQ, how it works, development |
 | [`preview/`](preview) | 32×8 renders of every state, drawn by the same C++ code as the clock, and captures from a real clock |
-| [`tools/`](tools) | Station-list generator, a crosscheck against Google's reference decoder, preview renderer |
+| [`tools/`](tools) | Station-list generator, a crosscheck against Google's reference decoder, the image renderer for these docs |
 
 To build the firmware yourself (needs git and [PlatformIO](https://platformio.org)):
 
@@ -79,7 +76,7 @@ Testing, previews and moving to a newer AWTRIX NG are in [docs/DEVELOPMENT.md](d
 
 ## Status
 
-In daily use on one clock since November 2026. Verified there: live times match the MTA to the
+Running on a clock since November 2026. Verified there: live times match the MTA to the
 minute, alerts, the overnight A, dark-off, gzip downloads, Wi-Fi re-provisioning. See the
 [changelog](CHANGELOG.md).
 
@@ -89,8 +86,8 @@ Limits worth knowing:
   Metro-North have other feeds and aren't supported.
 - **Three lines per screen at most.** The A and C share a color, so in the numbers layout a blue
   number can be either; the bullets and turns layouts show letters.
-- **Updating to an official AWTRIX NG release removes the Subway part.** Rebuild from this repo
-  instead (see the development notes).
+- **Updating to an official AWTRIX NG release removes the Subway part.** Use this project's update
+  file instead; installing it again brings the Subway screen back.
 - **Captive-portal Wi-Fi** (hotel or office login pages) can't work: the clock has no browser.
 
 ## License and credits

@@ -4,12 +4,7 @@ The clock is a Ulanzi TC001: a classic ESP32 (two cores at 240 MHz, about 320 KB
 flash), a 32×8 LED matrix, a light sensor and three buttons. It runs AWTRIX NG, and this project
 adds a native module and one script app. Everything happens on the clock.
 
-```
-core 0, fetch task:   MTA ──HTTPS──▶ TLS ──▶ gunzip (ROM) ──▶ GTFS-RT decoder ──▶ snapshot
-                                                              (< 640 B state)    (~100 B)
-                                                                                    │ spinlock
-core 1, render loop:  AWTRIX NG ──▶ Subway script ──▶ arrival rules ──▶ 32×8 pixels ◀┘
-```
+![From the MTA feed through TLS, gunzip and the decoder on one core, to the Subway app and the LEDs on the other](images/architecture.svg)
 
 ## The data
 
@@ -104,8 +99,9 @@ is updated. The clock only talks to the MTA and to an NTP pool for the time.
   5 minutes after failures.
 - TLS needs about 40 KB; the task checks the heap first and skips a round rather than fail
   mid-handshake.
-- The fetch task's 11 KB stack and the download buffers exist only while needed; the clock idles
-  at about 120 KB free and dips to about 28 KB during a gzip download.
+- The fetch task (11 KB of stack) is created when the Subway app first runs; a clock without the
+  app pays nothing. TLS and gzip buffers exist only during a download: the clock idles at about
+  120 KB free and dips to about 28 KB while a gzipped feed streams in.
 
 ## The screen
 
